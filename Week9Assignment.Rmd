@@ -1,0 +1,115 @@
+---
+title: "Week 9 Assignment - Web APIs"
+author: "Puja Roy"
+date: "3/24/24"
+output: openintro::lab_report
+---
+
+### Objective
+
+The New York Times web site provides a rich set of APIs, as described here: https://developer.nytimes.com/apis
+
+You’ll need to start by signing up for an API key.
+
+The main objective is to choose one of the New York Times APIs, construct an interface in R to read in the JSON data, and transform it into an R DataFrame.
+
+I chose to retrieve data from the NY Times Books API. This API retrieves NY Times book reviews and obtains data from all best-seller lists.
+
+### Load Libraries
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+library(httr)
+library(jsonlite)
+```
+
+
+### Set API Key
+```{r echo=FALSE}
+# Set your API key
+api_key <- "oUThOnq4f0QQvESBUQiMfvtmBJjA33i4"
+```
+
+### Define API Endpoint & Set Query Parameters
+```{r}
+# Define the API endpoint
+base_url <- "https://api.nytimes.com/svc/books/v3/reviews.json"
+
+# Set query parameters
+params1 <- list(author = "Rachel DeLoache Williams", "api-key" = api_key)
+params2 <- list(author = "Stephen King", "api-key" = api_key)
+params3 <- list(author = "Toni Morrison", "api-key" = api_key)
+```
+
+### Make GET request to the NY Times Book API
+```{r}
+# Make GET request to the API
+response <- GET(url = base_url, query = params1)
+
+# Check if request was successful
+if (status_code(response) == 200) {
+  # Parse JSON response
+  json_data <- content(response, as = "text", encoding = "UTF-8")
+  
+  # Convert JSON to DataFrame
+  df <- jsonlite::fromJSON(json_data)$results
+  
+  # Display the DataFrame
+  print(df)
+} else {
+  # Print error message with status code
+  print(paste("Error:", status_code(response), "- Unable to retrieve data from the API."))
+  
+  # Print detailed error message
+  print(content(response, as = "text"))
+}
+```
+
+```{r}
+# Make GET request to the API
+response <- GET(url = base_url, query = params2)
+
+# Check if request was successful
+if (status_code(response) == 200) {
+  # Parse JSON response
+  json_data <- content(response, as = "text", encoding = "UTF-8")
+  
+  # Convert JSON to DataFrame
+  df <- jsonlite::fromJSON(json_data)$results
+  
+  # Display the DataFrame
+  print(df)
+} else {
+  # Print error message with status code
+  print(paste("Error:", status_code(response), "- Unable to retrieve data from the API."))
+  
+  # Print detailed error message
+  print(content(response, as = "text"))
+}
+```
+
+```{r}
+# Make GET request to the API
+response <- GET(url = base_url, query = params3)
+
+# Check if request was successful
+if (status_code(response) == 200) {
+  # Parse JSON response
+  json_data <- content(response, as = "text", encoding = "UTF-8")
+  
+  # Convert JSON to DataFrame
+  df <- jsonlite::fromJSON(json_data)$results
+  
+  # Display the DataFrame
+  print(df)
+} else {
+  # Print error message with status code
+  print(paste("Error:", status_code(response), "- Unable to retrieve data from the API."))
+  
+  # Print detailed error message
+  print(content(response, as = "text"))
+}
+```
+
+...
+
